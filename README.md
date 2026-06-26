@@ -33,7 +33,7 @@ The service is deployed in Singapore (ap-southeast-1) and reachable at:
 
 | Service | URL | Credentials |
 |---|---|---|
-| **Grafana Dashboard** | http://54.169.214.226:3000/d/efqbk31b6s64ga/new-dashboard | `admin` / `admin` |
+| **Grafana Dashboard** | http://54.169.214.226:3000/ | `admin` / `admin` |
 | **Prometheus** | http://54.169.214.226:9090 | Public (no auth) |
 | **Alertmanager** | http://54.169.214.226:9093 | Public (no auth) |
 
@@ -67,8 +67,8 @@ No auth, no API key, no login required on API endpoints. Call directly.
 
 ### Installation
 ```bash
-git clone <repo-url>
-cd <repo>
+git clone https://github.com/tect0nicofficial/bKash-presents-SUST-CSE-Carnival-2026-Codex-Community-Hackathon.git
+cd bKash-presents-SUST-CSE-Carnival-2026-Codex-Community-Hackathon
 pnpm install
 cp .env.example .env
 ```
