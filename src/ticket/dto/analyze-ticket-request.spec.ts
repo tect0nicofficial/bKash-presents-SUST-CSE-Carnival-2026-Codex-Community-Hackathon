@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import { validate } from 'class-validator';
 import { AnalyzeTicketRequestDto } from './analyze-ticket-request.dto';
-// No taxonomy imports needed for this basic test
 
 describe('AnalyzeTicketRequestDto Validation', () => {
   it('should pass validation with valid request', async () => {

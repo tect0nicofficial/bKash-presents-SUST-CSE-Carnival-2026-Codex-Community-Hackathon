@@ -7,9 +7,10 @@ import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor';
 import { globalValidationPipe } from './common/pipes/global-validation.pipe';
 import helmet from 'helmet';
 
+const logger = new Logger('Bootstrap');
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const logger = new Logger('Bootstrap');
 
   app.use(helmet());
 
@@ -33,6 +34,6 @@ async function bootstrap() {
   logger.log(`Swagger docs at http://0.0.0.0:${port}/api`);
 }
 bootstrap().catch((err) => {
-  console.error('Failed to start application:', err);
+  logger.error('Failed to start application:', err);
   process.exit(1);
 });
