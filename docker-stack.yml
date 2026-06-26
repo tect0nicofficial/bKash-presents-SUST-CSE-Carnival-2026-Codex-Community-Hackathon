@@ -1,0 +1,75 @@
+version: "3.8"
+
+services:
+  api:
+    image: 611913894684.dkr.ecr.ap-southeast-1.amazonaws.com/queuestorm-investigator:latest
+    networks:
+      - app_net
+    deploy:
+      replicas: 8
+      restart_policy:
+        condition: any
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - /tmp/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api
+    networks:
+      - app_net
+    deploy:
+      restart_policy:
+        condition: any
+
+  prometheus:
+    image: prom/prometheus:v3.2.1
+    ports:
+      - "9090:9090"
+    volumes:
+      - /tmp/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - /tmp/alert.rules.yml:/etc/prometheus/alert.rules.yml:ro
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=1h"
+      - "--web.enable-lifecycle"
+    networks:
+      - app_net
+    deploy:
+      restart_policy:
+        condition: any
+
+  alertmanager:
+    image: prom/alertmanager:v0.28.1
+    ports:
+      - "9093:9093"
+    volumes:
+      - /tmp/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+    command:
+      - "--config.file=/etc/alertmanager/alertmanager.yml"
+    networks:
+      - app_net
+    deploy:
+      restart_policy:
+        condition: any
+
+  grafana:
+    image: grafana/grafana:11.6.0
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_INSTALL_PLUGINS=
+    networks:
+      - app_net
+    deploy:
+      restart_policy:
+        condition: any
+
+networks:
+  app_net:
+    driver: overlay
